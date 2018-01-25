@@ -74,8 +74,8 @@ const bookmarkList = (function() {
     return `
     <div class="bookmark" data-id="${bookmark.id}">
       <h2 class="collapsible">&#9660 ${bookmark.title}</h2>
-      <p class="link">${bookmark.link}</p>
-      <p class="description">${bookmark.description}</p>
+      <p class="link">${bookmark.url}</p>
+      <p class="description">${bookmark.desc}</p>
       ${rating}
       <button class="edit">Edit</button>
       <button class="delete">Delete</button>
