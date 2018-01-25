@@ -1,5 +1,8 @@
 'use strict';
-/* global api */
-$(api.getItems((response) => {
-  console.log(response);
+/* global api, store, bookmarkList */
+$(api.getItems(items => {
+  items.forEach((item) => {
+    store.bookmarks.push(item);
+  });
+  bookmarkList.render();
 }));
