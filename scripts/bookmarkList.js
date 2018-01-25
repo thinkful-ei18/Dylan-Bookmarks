@@ -5,11 +5,11 @@
 const bookmarkList = (function() {
 
   const getIdFromElement = function(element) {
-    return $(element).data('id');
+    return $(element).closest('div').data('id');
   };
 
   const handleExpandView = function() {
-    $('.bookmark-content').on('click', '.bookmark', event => {
+    $('.bookmark-content').on('click', '.collapsible', event => {
       const item = store.findById(getIdFromElement(event.currentTarget));
       store.update(item.id, {expanded: !item.expanded});
       render();
@@ -52,7 +52,7 @@ const bookmarkList = (function() {
     const rating = generateRating(bookmark.rating);
     return `
     <div class='bookmark' data-id="${bookmark.id}">
-      <h2>${bookmark.title}</h2>
+      <h2 class="collapsible">&#9654 ${bookmark.title}</h2>
       ${rating}
     </div>
     `;
@@ -62,10 +62,12 @@ const bookmarkList = (function() {
     const rating = generateRating(bookmark.rating);
     return `
     <div class="bookmark" data-id="${bookmark.id}">
-      <h2>${bookmark.title}</h2>
+      <h2 class="collapsible">&#9660 ${bookmark.title}</h2>
       <p class="link">${bookmark.link}</p>
       <p class="description">${bookmark.description}</p>
       ${rating}
+      <button class="edit">Edit</button>
+      <button class="delete">Delete</button>
     </div>
     `;
   };

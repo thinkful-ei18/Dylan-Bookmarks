@@ -12,7 +12,6 @@ const store = (function() {
 
   const update = function(id, newData) {
     const item = this.bookmarks.find(item => item.id === id);
-    console.log(item);
     Object.assign(item, newData);
   };
 
