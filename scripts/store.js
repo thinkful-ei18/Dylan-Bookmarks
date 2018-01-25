@@ -4,7 +4,15 @@
 
 const store = (function() {
 
+  const addItem = function(item) {
+    item.expanded = false;
+    item.editing = false;
+    this.bookmarks.push(item);
+  };
   return {
-    bookmarks: []
+    bookmarks: [],
+    addItem,
+    ratingFilter: 0,
+    page: 0
   };
 })();
