@@ -3,9 +3,10 @@
 /* global api, index, store */
 
 const bookmarkList = (function() {
-
   const getIdFromElement = function(element) {
-    return $(element).closest('div').data('id');
+    return $(element)
+      .closest('div')
+      .data('id');
   };
 
   const handleAddBookmarkButton = function() {
@@ -42,12 +43,19 @@ const bookmarkList = (function() {
       } else {
         const updateItem = {};
         let item = store.findById(getIdFromElement(event.currentTarget));
-        if ($('.bookmark-title input').val() !== item.title) updateItem.title = $('.bookmark-title input').val();
-        if ($('.bookmark-url input').val() !== item.url) updateItem.url = $('.bookmark-url input').val();
-        if ($('.bookmark-description input').val() !== item.desc) updateItem.desc = $('.bookmark-description input').val();
-        if ($('input[name=bookmark-rating]:checked').val() !== item.rating) updateItem.rating = $('input[name=bookmark-rating]:checked').val();
+        if ($('.bookmark-title input').val() !== item.title)
+          updateItem.title = $('.bookmark-title input').val();
+        if ($('.bookmark-url input').val() !== item.url)
+          updateItem.url = $('.bookmark-url input').val();
+        if ($('.bookmark-description input').val() !== item.desc)
+          updateItem.desc = $('.bookmark-description input').val();
+        if ($('input[name=bookmark-rating]:checked').val() !== item.rating)
+          updateItem.rating = $('input[name=bookmark-rating]:checked').val();
         api.editItem(item.id, updateItem, response => {
-          console.log('we editing now bitch');
+          store.update(item.id, updateItem);
+          item.editing = false;
+          navButtonToggle();
+          render();
         });
       }
     });
@@ -86,7 +94,7 @@ const bookmarkList = (function() {
   const handleExpandView = function() {
     $('.bookmark-content').on('click', '.collapsible', event => {
       const item = store.findById(getIdFromElement(event.currentTarget));
-      store.update(item.id, {expanded: !item.expanded});
+      store.update(item.id, { expanded: !item.expanded });
       render();
     });
   };
@@ -108,7 +116,24 @@ const bookmarkList = (function() {
     });
   };
 
-  const bindEventListeners = function(){
+  const handlePreviousPage = function() {
+    $('.pagination').on('click', '.prev-page', event => {
+      store.page -= 1;
+      // console.log(store.page);
+      render();
+    });
+  };
+
+  const handleNextPage = function() {
+    $('.pagination').on('click', '.next-page', event => {
+      store.page += 1;
+      // console.log(store.page);
+      render();
+    });
+  };
+
+
+  const bindEventListeners = function() {
     handleExpandView();
     handleAddBookmarkButton();
     handleBookmarkSubmit();
@@ -116,6 +141,8 @@ const bookmarkList = (function() {
     handleFilter();
     handleEdit();
     handleBookmarkCancel();
+    handlePreviousPage();
+    handleNextPage();
   };
 
   const render = function() {
@@ -124,17 +151,29 @@ const bookmarkList = (function() {
       filteredBookmarks = filteredBookmarks.filter(bookmark => {
         return bookmark.rating === parseInt(store.ratingFilter);
       });
-    } 
+    }
     const renderedBookmarks = renderBookmarks(filteredBookmarks);
     $('.bookmark-content').html(renderedBookmarks);
+    $('.pagination').html(generatePagination());
   };
 
   const renderBookmarks = function(bookmarks) {
-    return bookmarks.map(bookmark => {
-      return bookmark.expanded
-        ? generateExpandedHTML(bookmark)
-        : generateBookmarkHTML(bookmark);
-    });
+    let paginatedBookmarks = [];
+    for (let i = 8 * store.page - 8; i < 8 * store.page; i++) {
+      if (i < bookmarks.length) {
+        paginatedBookmarks.push(
+          bookmarks[i].expanded
+            ? generateExpandedHTML(bookmarks[i])
+            : generateBookmarkHTML(bookmarks[i])
+        );
+      }
+    }
+    return paginatedBookmarks;
+    // return bookmarks.map(bookmark => {
+    //   return bookmark.expanded
+    //     ? generateExpandedHTML(bookmark)
+    //     : generateBookmarkHTML(bookmark);
+    // });
   };
 
   const generateRating = function(rating) {
@@ -150,6 +189,18 @@ const bookmarkList = (function() {
         '<span class="fa fa-star" />\n'.repeat(5 - rating);
     }
     return generatedRating;
+  };
+
+  const generateEditRatingHTML = function(rating) {
+    let generatedHTML = '';
+    for (let i = 1; i <= 5; i++) {
+      if (parseInt(rating) === i) {
+        generatedHTML += `<input name="bookmark-rating" type="radio" value="${i}" checked="checked">${i}\n`;
+      } else {
+        generatedHTML += `<input name="bookmark-rating" type="radio" value="${i}">${i}\n`;
+      }
+    }
+    return generatedHTML;
   };
 
   const generateBookmarkHTML = function(bookmark) {
@@ -174,19 +225,22 @@ const bookmarkList = (function() {
       <button class="delete">Delete</button>
     </div>
     `;
-    if (bookmark.editing){
+    if (bookmark.editing) {
+      const editRating = generateEditRatingHTML(bookmark.rating);
       expanded = `
         <div class="bookmark" data-id="${bookmark.id}">
           <form>
-            <p class="bookmark-title">Title: <input type ="text" value="${bookmark.title}"></p>
-            <p class="bookmark-url">URL: <input type="url" value="${bookmark.url}"></p>
-            <p class="bookmark-description">Description: <input type="text-field" value="${bookmark.desc}"></p>
+            <p class="bookmark-title">Title: <input type ="text" value="${
+              bookmark.title
+            }"></p>
+            <p class="bookmark-url">URL: <input type="url" value="${
+              bookmark.url
+            }"></p>
+            <p class="bookmark-description">Description: <input type="text-field" value="${
+              bookmark.desc
+            }"></p>
             <p class="bookmark-rating">Rating: 
-              <input name="bookmark-rating" type="radio" value="1">1
-              <input name="bookmark-rating" type="radio" value="2">2
-              <input name="bookmark-rating" type="radio" value="3">3
-              <input name="bookmark-rating" type="radio" value="4">4
-              <input name="bookmark-rating" type="radio" value="5">5
+              ${editRating}
           <button class="cancel">Cancel</button>
           <button class="submit">Submit</button>
         </div>
@@ -194,6 +248,18 @@ const bookmarkList = (function() {
     }
 
     return expanded;
+  };
+
+  const generatePagination = function() {
+    let paginationHTML = '';
+    if (store.page !== 1) {
+      paginationHTML = paginationHTML + '<button class="prev-page">Previous Page</button>\n';
+    }
+    paginationHTML = paginationHTML + `Page: ${store.page}\n`;
+    if (store.bookmarks.length > store.page * 8) {
+      paginationHTML = paginationHTML + '<button class="next-page">Next Page</button>';
+    }
+    return paginationHTML;
   };
 
   return {
