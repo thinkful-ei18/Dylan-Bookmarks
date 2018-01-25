@@ -3,6 +3,23 @@
 /* global api, index, store */
 
 const bookmarkList = (function() {
+
+  const getIdFromElement = function(element) {
+    return $(element).data('id');
+  };
+
+  const handleExpandView = function() {
+    $('.bookmark-content').on('click', '.bookmark', event => {
+      const item = store.findById(getIdFromElement(event.currentTarget));
+      store.update(item.id, {expanded: !item.expanded});
+      render();
+    });
+  };
+
+  const bindEventListeners = function(){
+    handleExpandView();
+  };
+
   const render = function() {
     const renderedBookmarks = renderBookmarks(store.bookmarks);
     $('.bookmark-content').html(renderedBookmarks);
@@ -54,6 +71,7 @@ const bookmarkList = (function() {
   };
 
   return {
-    render
+    render,
+    bindEventListeners
   };
 })();
