@@ -2,6 +2,10 @@
   border: 1px black solid;
 }
 
+.hidden {
+  display: none;
+}
+
 .checked {
     color: orange;
 }

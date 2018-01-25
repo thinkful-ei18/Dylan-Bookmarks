@@ -4,14 +4,14 @@
 
 const store = (function() {
 
-  const addItem = function(item) {
-    item.expanded = false;
-    item.editing = false;
-    this.bookmarks.push(item);
+  const addItem = function(item, unsavedItem = false) {
+    item.expanded = unsavedItem;
+    item.editing = unsavedItem;
+    this.bookmarks.unshift(item);
   };
 
   const update = function(id, newData) {
-    const item = this.bookmarks.find(item => item.id === id);
+    const item = this.findById(id);
     Object.assign(item, newData);
   };
 
