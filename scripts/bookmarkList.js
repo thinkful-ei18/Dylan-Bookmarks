@@ -10,25 +10,44 @@ const bookmarkList = (function() {
 
   const renderBookmarks = function(bookmarks) {
     return bookmarks.map(bookmark => {
-      return generateBookmarkHTML(bookmark);
+      return bookmark.expanded
+        ? generateExpandedHTML(bookmark)
+        : generateBookmarkHTML(bookmark);
     });
   };
 
-  const generateBookmarkHTML = function(bookmark) {
-    let rating = `
+  const generateRating = function(rating) {
+    let generated = `
       <span class="fa fa-star"></span>
       <span class="fa fa-star"></span>
       <span class="fa fa-star"></span>
       <span class="fa fa-star"></span>
       <span class="fa fa-star"></span>`;
-    if (bookmark.rating !== null) {
-      rating =
-        '<span class="fa fa-star checked" />\n'.repeat(bookmark.rating) +
-        '<span class="fa fa-star" />\n'.repeat(5 - bookmark.rating);
+    if (rating !== null) {
+      generated =
+        '<span class="fa fa-star checked" />\n'.repeat(rating) +
+        '<span class="fa fa-star" />\n'.repeat(5 - rating);
     }
+    return generated;
+  };
+
+  const generateBookmarkHTML = function(bookmark) {
+    const rating = generateRating(bookmark.rating);
     return `
-    <div class='bookmark item-id'>
+    <div class='bookmark' data-id="${bookmark.id}">
       <h2>${bookmark.title}</h2>
+      ${rating}
+    </div>
+    `;
+  };
+
+  const generateExpandedHTML = function(bookmark) {
+    const rating = generateRating(bookmark.rating);
+    return `
+    <div class="bookmark" data-id="${bookmark.id}">
+      <h2>${bookmark.title}</h2>
+      <p class="link">${bookmark.link}</p>
+      <p class="description">${bookmark.description}</p>
       ${rating}
     </div>
     `;
