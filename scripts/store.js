@@ -19,11 +19,16 @@ const store = (function() {
     return this.bookmarks.find(item => item.id === id); 
   };
 
+  const deleteBookmark = function(id) {
+    this.bookmarks.splice(this.bookmarks.findIndex(bookmark => bookmark.id === id), 1);
+  };
+
   return {
     bookmarks: [],
     addItem,
     findById,
     update,
+    deleteBookmark,
     ratingFilter: 0,
     page: 0
   };

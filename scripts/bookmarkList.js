@@ -16,8 +16,19 @@ const bookmarkList = (function() {
     });
   };
 
+  const handleDeleteBookmark = function() {
+    $('.bookmark-content').on('click', '.delete', event => {
+      const id = getIdFromElement(event.currentTarget);
+      api.deleteItem(id, response => {
+        store.deleteBookmark(id);
+        render();
+      });
+    });
+  };
+
   const bindEventListeners = function(){
     handleExpandView();
+    handleDeleteBookmark();
   };
 
   const render = function() {

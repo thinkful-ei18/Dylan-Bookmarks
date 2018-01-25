@@ -7,7 +7,16 @@ const api = (function() {
     $.getJSON(`${BASE_URL}`, callback);
   };
 
+  const deleteItem = function(id, callback) {
+    $.ajax({
+      url: `${BASE_URL}/${id}`,
+      method: 'DELETE',
+      success: callback
+    });
+  };
+
   return {
-    getItems
+    getItems,
+    deleteItem
   };
 })();
