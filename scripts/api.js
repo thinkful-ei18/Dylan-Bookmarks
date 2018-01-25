@@ -17,6 +17,16 @@ const api = (function() {
     });
   };
 
+  const editItem = function(id, newData, callback) {
+    $.ajax({
+      url: `${BASE_URL}/${id}`,
+      method: 'PATCH',
+      contentType: 'application/json',
+      data: JSON.stringify(newData),
+      success: callback
+    });
+  };
+
   const deleteItem = function(id, callback) {
     $.ajax({
       url: `${BASE_URL}/${id}`,
@@ -28,6 +38,7 @@ const api = (function() {
   return {
     getItems,
     addItem,
+    editItem,
     deleteItem
   };
 })();

@@ -39,7 +39,42 @@ const bookmarkList = (function() {
           navButtonToggle();
           render();
         });
+      } else {
+        const updateItem = {};
+        let item = store.findById(getIdFromElement(event.currentTarget));
+        if ($('.bookmark-title input').val() !== item.title) updateItem.title = $('.bookmark-title input').val();
+        if ($('.bookmark-url input').val() !== item.url) updateItem.url = $('.bookmark-url input').val();
+        if ($('.bookmark-description input').val() !== item.desc) updateItem.desc = $('.bookmark-description input').val();
+        if ($('input[name=bookmark-rating]:checked').val() !== item.rating) updateItem.rating = $('input[name=bookmark-rating]:checked').val();
+        api.editItem(item.id, updateItem, response => {
+          console.log('we editing now bitch');
+        });
       }
+    });
+  };
+
+  const handleBookmarkCancel = function() {
+    $('.bookmark-content').on('click', '.cancel', event => {
+      event.preventDefault();
+      if (getIdFromElement(event.currentTarget) === 'undefined') {
+        store.deleteBookmark('undefined');
+        render();
+        navButtonToggle();
+      } else {
+        let item = store.findById(getIdFromElement(event.currentTarget));
+        item.editing = false;
+        navButtonToggle();
+        render();
+      }
+    });
+  };
+
+  const handleEdit = function() {
+    $('.bookmark-content').on('click', '.edit', event => {
+      let item = store.findById(getIdFromElement(event.currentTarget));
+      item.editing = true;
+      navButtonToggle();
+      render();
     });
   };
 
@@ -79,6 +114,8 @@ const bookmarkList = (function() {
     handleBookmarkSubmit();
     handleDeleteBookmark();
     handleFilter();
+    handleEdit();
+    handleBookmarkCancel();
   };
 
   const render = function() {
