@@ -1,0 +1,7 @@
+.bookmark {
+  border: 1px black solid;
+}
+
+.checked {
+    color: orange;
+}
