@@ -4,16 +4,16 @@
 }
 
 body {
-  background-color: #9DCBE6;
+  background-color: #9dcbe6;
 }
 
 .bookmark {
-  border: 1px #F66162 solid;
+  border: 1px #f66162 solid;
   margin-top: 15px;
   border-radius: 5px;
-  background-color: #F66162;
+  background-color: #f66162;
   color: #ffffff;
-  padding-top: 5px; 
+  padding-top: 5px;
 }
 
 .pagination {
@@ -37,7 +37,7 @@ h1 {
 }
 
 .btn {
-  background-color: #202B53;
+  background-color: #202b53;
   border: 1px solid rgb(27, 37, 71);
   color: #ffffffec;
 }
@@ -47,7 +47,8 @@ a {
   color: #ffffff;
 }
 
-a:hover, a:focus {
+a:hover,
+a:focus {
   text-decoration: none;
 }
 
@@ -56,12 +57,12 @@ a:hover, a:focus {
 }
 
 .fa {
-  color: #303E7A;
+  color: #303e7a;
   font-size: 20px;
 }
 
 .checked {
-    color: #F6E596;
+  color: #f6e596;
 }
 
 .link {
@@ -94,16 +95,16 @@ a:hover, a:focus {
 }
 
 .description {
-    display: inline-block;
-    width: 50%;
-    text-align: left;
-    padding-left: 1%;
+  display: inline-block;
+  width: 50%;
+  text-align: left;
+  padding-left: 1%;
 }
 
 .rating {
-    display: inline-block;
-    padding-left: 10px;
-    font-size: 20px;
+  display: inline-block;
+  padding-left: 10px;
+  font-size: 20px;
 }
 
 .expanded .edit {
@@ -119,17 +120,18 @@ a:hover, a:focus {
 }
 
 .editing .expand-label {
-    text-align: left;
-    padding-top: 15px;
-    padding-left: 15px;
-    display: inline-block;
+  text-align: left;
+  padding-top: 15px;
+  padding-left: 15px;
+  display: inline-block;
 }
 
 .title-input {
   margin-left: 15px;
 }
 
-.editing .label-title, .label-url {
+.editing .label-title,
+.label-url {
   margin-left: -70px;
 }
 
@@ -150,17 +152,16 @@ a:hover, a:focus {
   margin-left: -15px;
 }
 
-
 .description-input {
-    margin-top: 0px;
-    margin-bottom: 0px;
-    height: 100px;
-    width: 500px;
-    margin-left: 10px;
-    padding-bottom: 25px;
-    position: relative;
-    text-align: left;
-    vertical-align: text-top;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  height: 100px;
+  width: 500px;
+  margin-left: 10px;
+  padding-bottom: 25px;
+  position: relative;
+  text-align: left;
+  vertical-align: text-top;
 }
 
 .label-description {
@@ -168,5 +169,5 @@ a:hover, a:focus {
 }
 
 input:invalid {
-  box-shadow: 0 0 5px 1px #202B53;
+  box-shadow: 0 0 5px 1px #202b53;
 }
