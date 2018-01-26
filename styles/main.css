@@ -4,17 +4,20 @@
 }
 
 body {
-  background-color: rgb(240, 230, 216);
+  background-color: #9DCBE6;
 }
 
 .bookmark {
-  border: 1px black solid;
+  border: 1px #F66162 solid;
   margin-top: 15px;
   border-radius: 5px;
+  background-color: #F66162;
+  color: #ffffff;
+  padding-top: 5px; 
 }
 
 .pagination {
-  margin-top: 20px;
+  margin-top: 30px;
 }
 
 .page-links {
@@ -26,16 +29,140 @@ body {
   display: none;
 }
 
-.checked {
-    color: orange;
-}
-
 h1 {
-  color: rgb(26, 51, 41);
-  padding-bottom: 50px;
+  color: #ffffff;
+  padding-bottom: 20px;
+  font-size: 60px;
+  padding-top: 30px;
 }
 
 .btn {
-  background-color: #00000045;
-  border: 1px solid black;
+  background-color: #202B53;
+  border: 1px solid rgb(27, 37, 71);
+  color: #ffffffec;
+}
+
+a {
+  text-decoration: none;
+  color: #ffffff;
+}
+
+a:hover, a:focus {
+  text-decoration: none;
+}
+
+.editing input {
+  text-align: left;
+}
+
+.fa {
+  color: #303E7A;
+  font-size: 20px;
+}
+
+.checked {
+    color: #F6E596;
+}
+
+.link {
+  margin-bottom: 5px;
+}
+
+.expanded {
+  text-align: left;
+}
+
+.expanded h2 {
+  text-align: left;
+  padding-left: 30px;
+  padding-top: 20px;
+  display: inline-block;
+}
+
+.expanded .link {
+  float: right;
+  display: inline-block;
+  margin-right: 75px;
+  margin-top: 20px;
+}
+
+.expand-label {
+  text-align: left;
+  padding-top: 15px;
+  padding-left: 75px;
+  display: inline-block;
+}
+
+.description {
+    display: inline-block;
+    width: 50%;
+    text-align: left;
+    padding-left: 1%;
+}
+
+.rating {
+    display: inline-block;
+    padding-left: 10px;
+    font-size: 20px;
+}
+
+.expanded .edit {
+  float: right;
+  margin-right: 75px;
+  margin-top: 10px;
+}
+
+.expanded .delete {
+  float: right;
+  margin-right: 25px;
+  margin-top: 10px;
+}
+
+.editing .expand-label {
+    text-align: left;
+    padding-top: 15px;
+    padding-left: 15px;
+    display: inline-block;
+}
+
+.title-input {
+  margin-left: 15px;
+}
+
+.editing .label-title, .label-url {
+  margin-left: -70px;
+}
+
+.url-input {
+  margin-left: 12px;
+}
+
+.label-rating {
+  margin-left: -95px;
+}
+
+.editing button {
+  margin-top: 7px;
+  margin-bottom: 18px;
+}
+
+.editing .cancel {
+  margin-left: -15px;
+}
+
+
+.description-input {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    height: 100px;
+    width: 500px;
+    margin-left: 10px;
+    padding-bottom: 25px;
+    position: relative;
+    text-align: left;
+    vertical-align: text-top;
+}
+
+.label-description {
+  float: left;
 }

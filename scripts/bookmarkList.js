@@ -5,7 +5,7 @@
 const bookmarkList = (function() {
   const getIdFromElement = function(element) {
     return $(element)
-      .closest('div')
+      .closest('.bookmark')
       .data('id');
   };
 
@@ -29,9 +29,9 @@ const bookmarkList = (function() {
       event.preventDefault();
       if (getIdFromElement(event.currentTarget) === 'undefined') {
         let newItem = {
-          title: $('.bookmark-title input').val(),
-          url: $('.bookmark-url input').val(),
-          desc: $('.bookmark-description input').val(),
+          title: $('.title-input').val(),
+          url: $('.url-input').val(),
+          desc: $('.description-input').val(),
           rating: $('input[name=bookmark-rating]:checked').val()
         };
         api.addItem(newItem, response => {
@@ -43,12 +43,12 @@ const bookmarkList = (function() {
       } else {
         const updateItem = {};
         let item = store.findById(getIdFromElement(event.currentTarget));
-        if ($('.bookmark-title input').val() !== item.title)
-          updateItem.title = $('.bookmark-title input').val();
-        if ($('.bookmark-url input').val() !== item.url)
-          updateItem.url = $('.bookmark-url input').val();
-        if ($('.bookmark-description input').val() !== item.desc)
-          updateItem.desc = $('.bookmark-description input').val();
+        if ($('.title-input').val() !== item.title)
+          updateItem.title = $('.title-input').val();
+        if ($('.url-input').val() !== item.url)
+          updateItem.url = $('.url-input').val();
+        if ($('.description-input').val() !== item.desc)
+          updateItem.desc = $('.description-input').val();
         if ($('input[name=bookmark-rating]:checked').val() !== item.rating)
           updateItem.rating = parseInt($('input[name=bookmark-rating]:checked').val());
         api.editItem(item.id, updateItem, response => {
@@ -93,6 +93,8 @@ const bookmarkList = (function() {
 
   const handleExpandView = function() {
     $('.bookmark-content').on('click', '.collapsible', event => {
+      console.log('run');
+      event.preventDefault();
       const item = store.findById(getIdFromElement(event.currentTarget));
       store.update(item.id, { expanded: !item.expanded });
       render();
@@ -148,7 +150,7 @@ const bookmarkList = (function() {
     let filteredBookmarks = store.bookmarks;
     if (parseInt(store.ratingFilter) !== 0) {
       filteredBookmarks = filteredBookmarks.filter(bookmark => {
-        return bookmark.rating === parseInt(store.ratingFilter);
+        return bookmark.rating >= parseInt(store.ratingFilter);
       });
     }
     const renderedBookmarks = renderBookmarks(filteredBookmarks);
@@ -207,7 +209,7 @@ const bookmarkList = (function() {
     return `
     <div class='col-6'>
       <div class="bookmark" data-id="${bookmark.id}">
-        <h2 class="collapsible">&#9654 ${bookmark.title}</h2>
+        <a href="" class="collapsible"><h2>&#9654 ${bookmark.title}</h2></a>
         ${rating}
       </div>
     </div>
@@ -218,11 +220,11 @@ const bookmarkList = (function() {
     const rating = generateRating(bookmark.rating);
     let expanded = `
     <div class="col-12">
-    <div class="bookmark well" data-id="${bookmark.id}">
-      <h2 class="collapsible">&#9660 ${bookmark.title}</h2>
-      <a href="${bookmark.url}"><p class="link">${bookmark.url}</p></a>
-      <p class="description">${bookmark.desc}</p>
-      ${rating}
+    <div class="bookmark expanded" data-id="${bookmark.id}">
+      <a href="" class="collapsible"><h2>&#9660 ${bookmark.title}</h2></a>
+      <a href="${bookmark.url}"><button class="link btn">Visit Site</button></a><br>
+      <h4 class="expand-label">Description:</h3><p class="description">${bookmark.desc}</p><br>
+      <h4 class="expand-label">Rating:</h3><p class="rating">${rating}</p>
       <button class="edit btn">Edit</button>
       <button class="delete btn">Delete</button>
       </div>
@@ -232,15 +234,24 @@ const bookmarkList = (function() {
       const editRating = generateEditRatingHTML(bookmark.rating);
       expanded = `
       <div class="col-12">
-        <div class="bookmark" data-id="${bookmark.id}">
+        <div class="bookmark editing" data-id="${bookmark.id}">
           <form>
-            <p class="bookmark-title">Title: <input type ="text" value="${bookmark.title}"></p>
-            <p class="bookmark-url">URL: <input type="url" value="${bookmark.url}"></p>
-            <p class="bookmark-description">Description: <input type="text-field" value="${bookmark.desc}"></p>
-            <p class="bookmark-rating">Rating: 
-              ${editRating}
-          <button class="cancel btn">Cancel</button>
-          <button class="submit btn">Submit</button>
+          <div class="row">
+            <div class="col-4">
+              <h4 class="expand-label label-title">Title:</h3><input class="title-input" type="text" value="${bookmark.title}"><br>          
+              <h4 class="expand-label label-url">URL:</h3><input type="url" class="url-input" value="${bookmark.url}"><br>
+              <h4 class="expand-label label-rating">Rating:</h3> 
+                ${editRating} <br>
+              <button class="cancel btn">Cancel</button>
+              <button class="submit btn">Submit</button> 
+            </div>
+
+            <div class="col-6">
+              <h4 class="expand-label label-description">Description:</h3><textarea class="description-input">${bookmark.desc}</textarea><br>
+              
+            </div>
+          </div>
+          
         </div>
       </div>
         `;
@@ -251,13 +262,13 @@ const bookmarkList = (function() {
 
   const generatePagination = function(bookmarks) {
     let paginationHTML = '';
-    paginationHTML = `<div class="col-12 page-links"><button class="prev-page btn" ${
+    paginationHTML = `<div class="col-12"><div class="page-links"><button class="prev-page btn" ${
       store.page !== 1 ? '' : 'disabled'
     }>Previous Page</button>
       Page: ${store.page}
       <button class="next-page btn" ${
         bookmarks.length > store.page * 8 ? '' : 'disabled'
-      }>Next Page</button></div>`;
+      }>Next Page</button></div></div>`;
     return paginationHTML;
   };
 
