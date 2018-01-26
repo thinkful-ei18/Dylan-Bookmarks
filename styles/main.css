@@ -1,0 +1,20 @@
+* {
+  text-align: center;
+}
+
+.bookmark {
+  border: 1px black solid;
+  margin-top: 15px;
+}
+
+.pagination {
+  margin-top: 20px;
+}
+
+.hidden {
+  display: none;
+}
+
+.checked {
+    color: orange;
+}

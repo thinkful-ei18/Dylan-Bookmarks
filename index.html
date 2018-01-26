@@ -6,26 +6,37 @@
   <title>Bookmarks API</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+  <link rel="stylesheet" type="text/css" media="screen" href="styles/float-grid.css" />
+  <link rel="stylesheet" type="text/css" media="screen" href="styles/main.css" />
 </head>
 <body>
-  <h1>Bookmarks</h1>
-  <form class="add-bookmark">
-    <button type="button" class="js-add-bookmark-button">Add New Bookmark</button>
-  </form>
+  <div class="row">
+    <div class='col-12'>
+      <h1>Bookmarks</h1>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-6">
+      <form class="add-bookmark">
+        <button type="button" class="js-add-bookmark-button">Add New Bookmark</button>
+      </form>
+    </div>
 
-  <select name="rating-field" id="rating-field">
-    <option value=0>All</option>
-    <option value=1>1</option>
-    <option value=2>2</option>
-    <option value=3>3</option>
-    <option value=4>4</option>
-    <option value=5>5</option>
-  </select>
-  <div class="bookmark-content">
+    <div class='col-6'>
+      <select name="rating-field" id="rating-field">
+        <option value=0>All</option>
+        <option value=1>1</option>
+        <option value=2>2</option>
+        <option value=3>3</option>
+        <option value=4>4</option>
+        <option value=5>5</option>
+      </select>
+    </div>
+  </div>
+  <div class="bookmark-content row">
   </div>
 
-  <div class="pagination">
+  <div class="pagination row">
     
   </div>
 

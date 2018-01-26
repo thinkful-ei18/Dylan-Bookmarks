@@ -30,6 +30,6 @@ const store = (function() {
     update,
     deleteBookmark,
     ratingFilter: 0,
-    page: 2
+    page: 1
   };
 })();

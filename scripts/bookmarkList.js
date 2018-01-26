@@ -50,7 +50,7 @@ const bookmarkList = (function() {
         if ($('.bookmark-description input').val() !== item.desc)
           updateItem.desc = $('.bookmark-description input').val();
         if ($('input[name=bookmark-rating]:checked').val() !== item.rating)
-          updateItem.rating = $('input[name=bookmark-rating]:checked').val();
+          updateItem.rating = parseInt($('input[name=bookmark-rating]:checked').val());
         api.editItem(item.id, updateItem, response => {
           store.update(item.id, updateItem);
           item.editing = false;
@@ -132,7 +132,6 @@ const bookmarkList = (function() {
     });
   };
 
-
   const bindEventListeners = function() {
     handleExpandView();
     handleAddBookmarkButton();
@@ -154,7 +153,7 @@ const bookmarkList = (function() {
     }
     const renderedBookmarks = renderBookmarks(filteredBookmarks);
     $('.bookmark-content').html(renderedBookmarks);
-    $('.pagination').html(generatePagination());
+    $('.pagination').html(generatePagination(filteredBookmarks));
   };
 
   const renderBookmarks = function(bookmarks) {
@@ -206,7 +205,7 @@ const bookmarkList = (function() {
   const generateBookmarkHTML = function(bookmark) {
     const rating = generateRating(bookmark.rating);
     return `
-    <div class='bookmark' data-id="${bookmark.id}">
+    <div class='bookmark col-6' data-id="${bookmark.id}">
       <h2 class="collapsible">&#9654 ${bookmark.title}</h2>
       ${rating}
     </div>
@@ -216,7 +215,7 @@ const bookmarkList = (function() {
   const generateExpandedHTML = function(bookmark) {
     const rating = generateRating(bookmark.rating);
     let expanded = `
-    <div class="bookmark" data-id="${bookmark.id}">
+    <div class="bookmark col-12" data-id="${bookmark.id}">
       <h2 class="collapsible">&#9660 ${bookmark.title}</h2>
       <a href="${bookmark.url}"><p class="link">${bookmark.url}</p></a>
       <p class="description">${bookmark.desc}</p>
@@ -250,15 +249,15 @@ const bookmarkList = (function() {
     return expanded;
   };
 
-  const generatePagination = function() {
+  const generatePagination = function(bookmarks) {
     let paginationHTML = '';
-    if (store.page !== 1) {
-      paginationHTML = paginationHTML + '<button class="prev-page">Previous Page</button>\n';
-    }
-    paginationHTML = paginationHTML + `Page: ${store.page}\n`;
-    if (store.bookmarks.length > store.page * 8) {
-      paginationHTML = paginationHTML + '<button class="next-page">Next Page</button>';
-    }
+    paginationHTML = `<button class="prev-page" ${
+      store.page !== 1 ? '' : 'disabled'
+    }>Previous Page</button>
+      Page: ${store.page}
+      <button class="next-page" ${
+        bookmarks.length > store.page * 8 ? '' : 'disabled'
+      }>Next Page</button>`;
     return paginationHTML;
   };
 
