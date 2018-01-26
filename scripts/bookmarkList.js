@@ -205,9 +205,11 @@ const bookmarkList = (function() {
   const generateBookmarkHTML = function(bookmark) {
     const rating = generateRating(bookmark.rating);
     return `
-    <div class='bookmark col-6' data-id="${bookmark.id}">
-      <h2 class="collapsible">&#9654 ${bookmark.title}</h2>
-      ${rating}
+    <div class='col-6'>
+      <div class="bookmark" data-id="${bookmark.id}">
+        <h2 class="collapsible">&#9654 ${bookmark.title}</h2>
+        ${rating}
+      </div>
     </div>
     `;
   };
@@ -215,34 +217,32 @@ const bookmarkList = (function() {
   const generateExpandedHTML = function(bookmark) {
     const rating = generateRating(bookmark.rating);
     let expanded = `
-    <div class="bookmark col-12" data-id="${bookmark.id}">
+    <div class="col-12">
+    <div class="bookmark well" data-id="${bookmark.id}">
       <h2 class="collapsible">&#9660 ${bookmark.title}</h2>
       <a href="${bookmark.url}"><p class="link">${bookmark.url}</p></a>
       <p class="description">${bookmark.desc}</p>
       ${rating}
-      <button class="edit">Edit</button>
-      <button class="delete">Delete</button>
+      <button class="edit btn">Edit</button>
+      <button class="delete btn">Delete</button>
+      </div>
     </div>
     `;
     if (bookmark.editing) {
       const editRating = generateEditRatingHTML(bookmark.rating);
       expanded = `
+      <div class="col-12">
         <div class="bookmark" data-id="${bookmark.id}">
           <form>
-            <p class="bookmark-title">Title: <input type ="text" value="${
-              bookmark.title
-            }"></p>
-            <p class="bookmark-url">URL: <input type="url" value="${
-              bookmark.url
-            }"></p>
-            <p class="bookmark-description">Description: <input type="text-field" value="${
-              bookmark.desc
-            }"></p>
+            <p class="bookmark-title">Title: <input type ="text" value="${bookmark.title}"></p>
+            <p class="bookmark-url">URL: <input type="url" value="${bookmark.url}"></p>
+            <p class="bookmark-description">Description: <input type="text-field" value="${bookmark.desc}"></p>
             <p class="bookmark-rating">Rating: 
               ${editRating}
-          <button class="cancel">Cancel</button>
-          <button class="submit">Submit</button>
+          <button class="cancel btn">Cancel</button>
+          <button class="submit btn">Submit</button>
         </div>
+      </div>
         `;
     }
 
@@ -251,13 +251,13 @@ const bookmarkList = (function() {
 
   const generatePagination = function(bookmarks) {
     let paginationHTML = '';
-    paginationHTML = `<button class="prev-page" ${
+    paginationHTML = `<div class="col-12 page-links"><button class="prev-page btn" ${
       store.page !== 1 ? '' : 'disabled'
     }>Previous Page</button>
       Page: ${store.page}
-      <button class="next-page" ${
+      <button class="next-page btn" ${
         bookmarks.length > store.page * 8 ? '' : 'disabled'
-      }>Next Page</button>`;
+      }>Next Page</button></div>`;
     return paginationHTML;
   };
 
