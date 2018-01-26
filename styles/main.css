@@ -166,3 +166,7 @@ a:hover, a:focus {
 .label-description {
   float: left;
 }
+
+input:invalid {
+  box-shadow: 0 0 5px 1px #202B53;
+}
