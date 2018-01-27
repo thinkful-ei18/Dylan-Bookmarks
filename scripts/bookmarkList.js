@@ -11,28 +11,21 @@ const bookmarkList = (function() {
 
   const handleAddBookmarkButton = function() {
     $('.js-add-bookmark-button').on('click', event => {
-      let newItem = {
-        id: 'undefined',
-        title: '',
-        url: '',
-        desc: '',
-        rating: 0
-      };
-      store.addItem(newItem, true);
+      store.isEditing(true);
       navButtonToggle();
       render();
     });
   };
 
   const handleBookmarkSubmit = function() {
-    $('.bookmark-content').on('click', '.submit', event => {
+    $('.bookmark-form').on('click', '.submit', event => {
       event.preventDefault();
-      if (getIdFromElement(event.currentTarget) === 'undefined') {
+      if (store.editing && !store.currentlyEditing) {
         let newItem = formValues();
         api.addItem(newItem, response => {
           store.addItem(response);
-          store.deleteBookmark('undefined');
           navButtonToggle();
+          store.isEditing(false);
           render();
         });
       } else {
@@ -41,6 +34,8 @@ const bookmarkList = (function() {
         api.editItem(item.id, updateItem, response => {
           store.update(item.id, updateItem);
           item.editing = false;
+          store.isEditing(false);
+          store.currentlyEditing = undefined;
           navButtonToggle();
           render();
         });
@@ -58,15 +53,15 @@ const bookmarkList = (function() {
   };
 
   const handleBookmarkCancel = function() {
-    $('.bookmark-content').on('click', '.cancel', event => {
+    $('.bookmark-form').on('click', '.cancel', event => {
       event.preventDefault();
-      if (getIdFromElement(event.currentTarget) === 'undefined') {
-        store.deleteBookmark('undefined');
+      if (!store.currentlyEditing) {
+        store.isEditing(false);
         render();
         navButtonToggle();
       } else {
-        let item = store.findById(getIdFromElement(event.currentTarget));
-        item.editing = false;
+        store.isEditing(false);
+        store.currentlyEditing = undefined;
         navButtonToggle();
         render();
       }
@@ -76,7 +71,7 @@ const bookmarkList = (function() {
   const handleEdit = function() {
     $('.bookmark-content').on('click', '.edit', event => {
       let item = store.findById(getIdFromElement(event.currentTarget));
-      item.editing = true;
+      store.setCurrentlyEditing(item);
       navButtonToggle();
       render();
     });
@@ -150,6 +145,7 @@ const bookmarkList = (function() {
       });
     }
     const renderedBookmarks = renderBookmarks(filteredBookmarks);
+    $('.bookmark-form').html(generateEditHTML(store.currentlyEditing || {}));
     $('.bookmark-content').html(renderedBookmarks);
     $('.pagination').html(generatePagination(filteredBookmarks));
   };
@@ -230,7 +226,14 @@ const bookmarkList = (function() {
       </div>
     </div>
     `;
-    if (bookmark.editing) {
+    return expanded;
+  };
+
+  const generateEditHTML = function(bookmark) {
+    let expanded = '';
+    console.log("Is editing", store.editing);
+    if (store.editing) {
+      
       const editRating = generateEditRatingHTML(bookmark.rating);
       expanded = `
       <div class="col-12">
@@ -239,10 +242,10 @@ const bookmarkList = (function() {
           <div class="row">
             <div class="col-4">
               <h4 class="expand-label label-title">Title:</h3><input class="title-input" type="text" value="${
-                bookmark.title
+                bookmark.title || ''
               }" required minlength="1"><br>          
               <h4 class="expand-label label-url">URL:</h3><input type="url" class="url-input" value="${
-                bookmark.url
+                bookmark.url || ''
               }" required minlength="5"><br>
               <h4 class="expand-label label-rating">Rating:</h3> 
                 ${editRating} <br>
@@ -252,17 +255,15 @@ const bookmarkList = (function() {
 
             <div class="col-6">
               <h4 class="expand-label label-description">Description:</h3><textarea class="description-input">${
-                bookmark.desc
-              }</textarea><br>
-              
+                bookmark.desc || ''
+              }</textarea><br>             
             </div>
-          </div>
-          
+          </div>  
         </div>
       </div>
         `;
     }
-
+    console.log("Expanded html", expanded);
     return expanded;
   };
 

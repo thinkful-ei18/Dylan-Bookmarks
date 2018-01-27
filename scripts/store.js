@@ -19,8 +19,17 @@ const store = (function() {
     return this.bookmarks.find(item => item.id === id); 
   };
 
+  const isEditing = function(bool) {
+    this.editing = bool;
+  };
+    
   const deleteBookmark = function(id) {
     this.bookmarks.splice(this.bookmarks.findIndex(bookmark => bookmark.id === id), 1);
+  };
+
+  const setCurrentlyEditing = function(item) {
+    this.isEditing(true);
+    this.currentlyEditing = item;
   };
 
   return {
@@ -30,6 +39,9 @@ const store = (function() {
     update,
     deleteBookmark,
     ratingFilter: 0,
-    page: 1
+    page: 1,
+    editing: false,
+    isEditing, 
+    setCurrentlyEditing,
   };
 })();
