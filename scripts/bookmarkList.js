@@ -41,18 +41,15 @@ const bookmarkList = (function() {
           render();
         });
       } else {
-        const updateItem = {};
         let item = store.findById(getIdFromElement(event.currentTarget));
-        if ($('.title-input').val() !== item.title)
-          updateItem.title = $('.title-input').val();
-        if ($('.url-input').val() !== item.url)
-          updateItem.url = $('.url-input').val();
-        if ($('.description-input').val() !== item.desc)
-          updateItem.desc = $('.description-input').val();
-        if ($('input[name=bookmark-rating]:checked').val() !== item.rating)
-          updateItem.rating = parseInt(
+        const updateItem = {
+          title: $('.title-input').val(),
+          url: $('.url-input').val(),
+          desc: $('.description-input').val(),
+          rating: parseInt(
             $('input[name=bookmark-rating]:checked').val()
-          );
+          )
+        };
         api.editItem(item.id, updateItem, response => {
           store.update(item.id, updateItem);
           item.editing = false;
@@ -225,11 +222,11 @@ const bookmarkList = (function() {
     <div class="bookmark expanded" data-id="${bookmark.id}">
       <a href="" class="collapsible"><h2>&#9660 ${bookmark.title}</h2></a>
       <a href="${
-        bookmark.url
-      }"><button class="link btn">Visit Site</button></a><br>
+  bookmark.url
+  }"><button class="link btn">Visit Site</button></a><br>
       <h4 class="expand-label">Description:</h3><p class="description">${
-        bookmark.desc
-      }</p><br>
+  bookmark.desc
+  }</p><br>
       <h4 class="expand-label">Rating:</h3><p class="rating">${rating}</p>
       <button class="edit btn">Edit</button>
       <button class="delete btn">Delete</button>
@@ -245,11 +242,11 @@ const bookmarkList = (function() {
           <div class="row">
             <div class="col-4">
               <h4 class="expand-label label-title">Title:</h3><input class="title-input" type="text" value="${
-                bookmark.title
-              }" required minlength="1"><br>          
+  bookmark.title
+  }" required minlength="1"><br>          
               <h4 class="expand-label label-url">URL:</h3><input type="url" class="url-input" value="${
-                bookmark.url
-              }" required minlength="5"><br>
+  bookmark.url
+  }" required minlength="5"><br>
               <h4 class="expand-label label-rating">Rating:</h3> 
                 ${editRating} <br>
               <button class="cancel btn">Cancel</button>
@@ -258,8 +255,8 @@ const bookmarkList = (function() {
 
             <div class="col-6">
               <h4 class="expand-label label-description">Description:</h3><textarea class="description-input">${
-                bookmark.desc
-              }</textarea><br>
+  bookmark.desc
+  }</textarea><br>
               
             </div>
           </div>
@@ -279,8 +276,8 @@ const bookmarkList = (function() {
     }>Previous Page</button>
       Page: ${store.page}
       <button class="next-page btn" ${
-        bookmarks.length > store.page * 8 ? '' : 'disabled'
-      }>Next Page</button></div></div>`;
+  bookmarks.length > store.page * 8 ? '' : 'disabled'
+  }>Next Page</button></div></div>`;
     return paginationHTML;
   };
 
