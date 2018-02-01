@@ -244,7 +244,7 @@ const bookmarkList = (function() {
               <h4 class="expand-label label-title">Title:</h3><input class="title-input" type="text" value="${
                 bookmark.title || ''
               }" required minlength="1"><br>          
-              <h4 class="expand-label label-url">URL:</h3><input type="url" class="url-input" value="${
+              <h4 class="expand-label label-url">URL:</h3><input type="text" class="url-input" value="${
                 bookmark.url || ''
               }" required minlength="5"><br>
               <h4 class="expand-label label-rating">Rating:</h3> 
